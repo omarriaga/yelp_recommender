@@ -8,9 +8,13 @@ package edu.uniandes.yelp.recommender;
 import edu.uniande.yelp.entities.Review;
 import edu.uniande.yelp.facades.ReviewService;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.Singleton;
-import org.recommender101.data.DefaultDataSplitter;
+import org.recommender101.data.*;
+import org.recommender101.recommender.baseline.NearestNeighbors;
 
 /**
  *
@@ -23,9 +27,30 @@ public class CFRecommender {
     private ReviewService reviewService;
     private List<Review> data;
     
+    
     public void init(){
-        data = reviewService.getAllreviews();
-        
-        
+        try {
+            data = reviewService.getAllreviews();
+            DataModel train_model = new DataModel();
+            DataModel test_model = new DataModel();
+            int i = 0;
+            for (Review review : data){
+                if (i%5==0){
+                    test_model.addRating(review.getnUserId(), review.getnBusinessId(), review.getStars());
+                }else{
+                    train_model.addRating(review.getnUserId(), review.getnBusinessId(), review.getStars());
+                }
+            }
+            System.out.println("train_model size: "+train_model.getRatings().size());
+            System.out.println("test_model size: "+test_model.getRatings().size());
+            NearestNeighbors recommender = new NearestNeighbors();
+            recommender.setItemBased("true");
+            recommender.setDataModel(train_model);
+            recommender.setNeighbors("30");
+            recommender.setSimThreshold("0.7");
+            recommender.init();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 }
