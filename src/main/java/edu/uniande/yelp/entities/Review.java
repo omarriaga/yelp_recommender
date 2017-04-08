@@ -48,9 +48,9 @@ public class Review implements Serializable {
     @Column(name = "type")
     private String type;
     @Transient
-    private long nUserId;
+    private int nUserId;
     @Transient
-    private long nBusinessId;
+    private int nBusinessId;
 
     public ObjectId getId() {
         return id;
@@ -142,23 +142,23 @@ public class Review implements Serializable {
         this.type = type;
     }
 
-    public long getnUserId() {
+    public int getnUserId() {
         return nUserId;
     }
 
-    public void setnUserId(long nUserId) {
+    public void setnUserId(int nUserId) {
         this.nUserId = nUserId;
     }
 
-    public long getnBusinessId() {
+    public int getnBusinessId() {
         return nBusinessId;
     }
 
-    public void setnBusinessId(long nBusinessId) {
+    public void setnBusinessId(int nBusinessId) {
         this.nBusinessId = nBusinessId;
     }
     
-    public static long transform(String name) {
+    public static int transform(String name) {
         String a = "";
         for (int i = 0; i < name.length(); i++) {
             if (name.charAt(i) >= 57 || name.charAt(i) < 48) {
@@ -168,7 +168,7 @@ public class Review implements Serializable {
             }
         }
         try {
-            return Long.parseLong(a);
+            return Integer.parseInt(a);
         } catch (NumberFormatException e) {
             System.out.println(name + " " + a);
             return 0;
