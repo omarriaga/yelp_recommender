@@ -39,7 +39,7 @@ public class HomeController implements Serializable{
 
     public String hello(){
         //tipsService.getTip();
-        //reviewService.getReview();
+        //reviewService.getAllreviews();
         cfrecommender.init();
         return "hello World!!";
     }

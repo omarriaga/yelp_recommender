@@ -23,7 +23,8 @@ public class ReviewService {
     
     
     public List<Review> getAllreviews(){
-        return em.createNativeQuery("{}", Review.class).getResultList();
+        List<Review> reviews = em.createNativeQuery("{}", Review.class).getResultList();
+        return reviews;
     }
     
     
