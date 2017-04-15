@@ -5,8 +5,6 @@
  */
 package edu.uniandes.yelp.controller;
 
-import edu.uniande.yelp.facades.ReviewService;
-import edu.uniande.yelp.facades.TipsService;
 import edu.uniandes.yelp.recommender.CFRecommender;
 import java.io.Serializable;
 import java.util.List;

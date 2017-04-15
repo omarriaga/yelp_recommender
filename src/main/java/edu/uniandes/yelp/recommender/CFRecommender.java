@@ -12,8 +12,13 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import javax.ejb.EJB;
 import javax.ejb.Singleton;
+import net.recommenders.rival.core.DataModel;
+import net.recommenders.rival.core.TemporalDataModel;
+import net.recommenders.rival.split.splitter.CrossValidationSplitter;
+import net.recommenders.rival.split.splitter.IterativeCrossValidationSplitter;
 import org.apache.mahout.cf.taste.common.TasteException;
 import org.apache.mahout.cf.taste.impl.common.LongPrimitiveIterator;
 import org.apache.mahout.cf.taste.impl.recommender.GenericItemBasedRecommender;
@@ -39,28 +44,28 @@ public class CFRecommender {
     public CFRecommender() {
         userIds = new LinkedList<>();
     }
-    
+
     public void init() {
         try {
             //data = reviewService.getAllreviews();
             System.out.println("Iniciando MongoDataModel");
             dm = new MongoDBDataModel("localhost", 27017, "yelp", "reviews", true, false, null, "user", "business", "stars", "prueba");
-            System.out.println("users: "+dm.getNumUsers());
+            System.out.println("users: " + dm.getNumUsers());
             System.out.println("items: " + dm.getNumItems());
             ItemSimilarity is = new PearsonCorrelationSimilarity(dm);
             recommender = new GenericItemBasedRecommender(dm, is);
-            
+
         } catch (UnknownHostException | TasteException ex) {
             ex.printStackTrace();
             System.out.println("exception: " + ex.getLocalizedMessage());
         }
     }
-    
-    private void fillUserIds(){
+
+    private void fillUserIds() {
         try {
             userIds = new LinkedList<>();
             LongPrimitiveIterator iterator = dm.getUserIDs();
-            while(iterator.hasNext()){
+            while (iterator.hasNext()) {
                 userIds.add(iterator.nextLong());
             }
         } catch (TasteException ex) {
@@ -68,29 +73,34 @@ public class CFRecommender {
             userIds.clear();
         }
     }
-    
-    public List<Long> getUserIds(){
-        if(userIds.isEmpty()){
+
+    public List<Long> getUserIds() {
+        if (userIds.isEmpty()) {
             fillUserIds();
         }
         return userIds;
     }
 
-    public void recommend(long userID) {
+    public List<Long> recommend(long userID) {
         try {
             List<RecommendedItem> items = recommender.recommend(userID, 10);
             System.out.println("user: " + userID);
             System.out.println("count: " + items.size());
-            System.out.println("max preference: "+dm.getMaxPreference());
-            System.out.println("min preference: "+dm.getMinPreference());
-            for (Preference p: dm.getPreferencesFromUser(userID)){
-                System.out.println("preferencia: item: "+p.getItemID()+" value: "+p.getValue());
+            System.out.println("max preference: " + dm.getMaxPreference());
+            System.out.println("min preference: " + dm.getMinPreference());
+            for (Preference p : dm.getPreferencesFromUser(userID)) {
+                System.out.println("preferencia: item: " + p.getItemID() + " value: " + p.getValue());
             }
-            for (RecommendedItem item : items) {
+            items.stream().forEach((item) -> {
                 System.out.println("item : " + item.getItemID());
-            }
+            });
+            return items.stream().map(s -> s.getItemID()).collect(Collectors.toList());
         } catch (TasteException ex) {
             Logger.getLogger(CFRecommender.class.getName()).log(Level.SEVERE, null, ex);
+            return new LinkedList<>();
         }
     }
+
+    
+
 }
