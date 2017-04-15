@@ -20,7 +20,7 @@ import org.bson.types.ObjectId;
  * @author juan
  */
 @Entity
-@Table(name = "reviews_train")
+@Table(name = "reviews")
 public class Review implements Serializable {
 
     private static final long serialVersionUID = 1L;

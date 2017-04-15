@@ -12,6 +12,15 @@
         Hello from Facelets
         <br />
         <h:outputText value="#{homeController.hello()}" />
+        <br/>
+        <h:form>
+            <p:selectOneMenu id="user_ids" value="#{homeController.userId}"  >
+                <f:selectItem itemLabel="Usuarios" itemValue="-1"/>
+                <f:selectItems value="#{homeController.limitedList()}" var="id" itemLabel="#{id.toString()}" itemValue="#{id.longValue()}" />
+            </p:selectOneMenu>
+            
+            <p:commandButton action="#{homeController.recommend()}" />
+        </h:form>
     </h:body>
 </html>
 

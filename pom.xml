@@ -54,7 +54,6 @@
         <dependency>
             <groupId>org.mongodb</groupId>
             <artifactId>mongo-java-driver</artifactId>
-            <version>3.4.2</version>
         </dependency>
         <dependency>
             <groupId>javax</groupId>
@@ -68,16 +67,15 @@
             <version>1.1.1</version>
         </dependency>
         <dependency>
-            <groupId>net.librec</groupId>
-            <artifactId>librec-core</artifactId>
-            <version>2.0.0</version>
+            <groupId>org.apache.mahout</groupId>
+            <artifactId>mahout-math</artifactId>
+            <version>0.9</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.apache.mahout/mahout-integration -->
         <dependency>
-            <groupId>recommender101</groupId>
-            <artifactId>org.recommender101</artifactId>
-            <version>1.0</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/src/main/resources/recommender101-core.jar</systemPath>
+            <groupId>org.apache.mahout</groupId>
+            <artifactId>mahout-integration</artifactId>
+            <version>0.12.2</version>
         </dependency>
     </dependencies>
 
