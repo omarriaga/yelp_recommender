@@ -6,7 +6,6 @@
 package edu.uniandes.yelp.recommender;
 
 import edu.uniande.yelp.entities.Review;
-import edu.uniande.yelp.entities.Business;
 import edu.uniande.yelp.entities.Tag;
 import edu.uniande.yelp.facades.ReviewService;
 import edu.uniande.yelp.facades.BusinessService;
@@ -67,17 +66,17 @@ public class ContentRecommender extends AbstractRecommender{
         this.model = train_model;
 
         //Ya fue pre-procesado
-        List<Tag> tagsWeight = ContentBasedUtilities.createFeatureWeightFile(businessService.getAllBusiness());
+        ContentBasedUtilities.createFeatureWeightFile(businessService.getAllBusiness());
        
         this.contentBasedRecommender= new ContentBasedRecommender();
         ContentBasedRecommender.dataDirectory="data";
         contentBasedRecommender.setDataModel(model);
-        contentBasedRecommender.setWordListFile("artists.dat");
+        contentBasedRecommender.setWordListFile("business.dat");
         //La implementacion crea unos vectores de similitud, que guarda en el archivo cos-sim-vectors.txt, ya fueron calculados
         contentBasedRecommender.setFeatureWeightFile("tag_weight.txt");
         contentBasedRecommender.init();
 
         List<Integer> lista = contentBasedRecommender.recommendItems(2).subList(0, 500);
-        List<Integer> resp = new ArrayList();;
+        List<Integer> resp = new ArrayList();
     }
 }

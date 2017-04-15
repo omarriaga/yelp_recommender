@@ -12,6 +12,8 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Class that offers utilities for using the last.fm dataset on the Recommenders101 framework
@@ -96,38 +98,52 @@ public class ContentBasedUtilities {
 		
 	}
 	
-	public static List<Tag> createFeatureWeightFile(List<Business> data){
+	public static void createFeatureWeightFile(List<Business> data){
 		
-            HashMap<String,HashMap<String,Integer>> itemId_featureId_count= new HashMap<>();
-			
+            PrintWriter pr= null;
+            PrintWriter prBusiness= null;
+            try {
+                pr= new PrintWriter(new File("tag_weight.txt"));
+                prBusiness= new PrintWriter(new File("business.dat"));
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(ContentBasedUtilities.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            HashMap<String,Integer> weightTags = new HashMap<>();
             for(Business rev : data){
+                
+                String outputBusiness = rev.getBusinessId() + "\t" + rev.getName() + "\t" + rev.getCity() + "\t" +
+                        rev.getNeighborhood() + "\t" + rev.getState() + "\t" + rev.getAddress();
+                pr.println(outputBusiness);
+                
                 String itemId = rev.getBusinessId();
                 List<String> featureId= rev.getTagsId();
-
-                HashMap<String,Integer> itemHashmap = itemId_featureId_count.get(itemId);
-                for(int i = 0; i < featureId.size(); i++){
-                    itemHashmap.put(featureId.get(i), i+1);
-                }
                 
-                itemId_featureId_count.put(itemId, itemHashmap);
-
+                for(String tag : featureId){
+                    if(!weightTags.containsKey(tag)){
+                        weightTags.put(tag, 1);
+                    } else {
+                        weightTags.put(tag, weightTags.get(tag)+1);
+                    }   
+                }
             }
-            List<Tag> tags = new ArrayList<>();
-            for (String itemId : itemId_featureId_count.keySet()) {
-                    HashMap<String,Integer> itemHashmap = itemId_featureId_count.get(itemId);
-                    for (String featureId  : itemHashmap.keySet()) {
-                            // item-id;feature-id:weight feature-id weight
-                            Integer weight = itemHashmap.get(featureId);
-                            if (weight > 3) {
-                                    Tag newTag = new Tag();
-                                    newTag.setFeatureId(featureId);
-                                    newTag.setItemId(itemId);
-                                    newTag.setWeight(weight);
-                                    tags.add(newTag);
-                            }
+            
+           // List<Tag> tags = new ArrayList<>();
+            for(Business rev : data){
+                List<String> businessTags = rev.getTagsId();
+                for(String tag : businessTags){
+                    //Tag newTag = new Tag();
+                    //newTag.setFeatureId(tag);
+                    //newTag.setItemId(rev.getBusinessId());
+                    //newTag.setWeight(weightTags.get(tag));
+                    if(weightTags.get(tag) > 3){
+                        //tags.add(newTag);
+                        String outputLine = rev.getBusinessId() + ";" + tag + ":" + weightTags.get(tag);
+                        pr.println(outputLine);
                     }
+                }
             }	
-            return tags;
+            //return tags;
 	}
 
 }
