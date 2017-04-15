@@ -6,7 +6,10 @@
 package edu.uniandes.yelp.recommender;
 
 import edu.uniande.yelp.entities.Review;
+import edu.uniande.yelp.entities.Business;
+import edu.uniande.yelp.entities.Tag;
 import edu.uniande.yelp.facades.ReviewService;
+import edu.uniande.yelp.facades.BusinessService;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -24,6 +27,8 @@ import org.recommender101.recommender.extensions.contentbased.ContentBasedRecomm
 public class ContentRecommender extends AbstractRecommender{
     @EJB
     private ReviewService reviewService;
+    @EJB
+    private BusinessService businessService;
     private List<Review> data;
     private DataModel model;
     private ContentBasedRecommender contentBasedRecommender;
@@ -62,7 +67,8 @@ public class ContentRecommender extends AbstractRecommender{
         this.model = train_model;
 
         //Ya fue pre-procesado
-        //ContentBasedUtilities.createFeatureWeightFile("data/user_taggedartists.dat", "data/tag_weight.txt");
+        List<Tag> tagsWeight = ContentBasedUtilities.createFeatureWeightFile(businessService.getAllBusiness());
+       
         this.contentBasedRecommender= new ContentBasedRecommender();
         ContentBasedRecommender.dataDirectory="data";
         contentBasedRecommender.setDataModel(model);
