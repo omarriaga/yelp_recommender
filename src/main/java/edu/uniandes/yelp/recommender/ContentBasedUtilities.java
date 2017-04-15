@@ -36,12 +36,12 @@ public class ContentBasedUtilities {
 			reed.readLine();//header
 			while((line=reed.readLine())!=null){
 				String[] splitted=line.split("\t");
-				String itemId=splitted[1];
+				String itemId = splitted[1];
 				String featureId=splitted[2];
 				
 				
 				if(!itemId_featureId_count.containsKey(itemId)){
-					itemId_featureId_count.put(itemId,new HashMap<>());
+					itemId_featureId_count.put(itemId, new HashMap<String,Integer>());
 				}
 				
 				HashMap<String,Integer> itemHashmap = itemId_featureId_count.get(itemId);
