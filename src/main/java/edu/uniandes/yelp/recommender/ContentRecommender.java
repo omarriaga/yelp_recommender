@@ -6,10 +6,8 @@
 package edu.uniandes.yelp.recommender;
 
 import edu.uniande.yelp.entities.Review;
-import edu.uniande.yelp.entities.Tag;
 import edu.uniande.yelp.facades.ReviewService;
 import edu.uniande.yelp.facades.BusinessService;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import javax.ejb.EJB;
@@ -66,7 +64,7 @@ public class ContentRecommender extends AbstractRecommender{
             
         this.model = train_model;
         
-        int user = model.getUsers().iterator().next();
+        int user = data.get(0).getnUserId();
 
         //Ya fue pre-procesado
         ContentBasedUtilities.createFeatureWeightFile(businessService.getAllBusiness());

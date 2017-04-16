@@ -8,10 +8,12 @@ package edu.uniande.yelp.entities;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 import org.bson.types.ObjectId;
 
@@ -79,7 +81,8 @@ public class Business implements Serializable {
     private String city;
     @Column(name = "state")
     private String state;
-    @Column(name = "categories")
+    @ElementCollection
+    @OrderColumn(name = "categories")
     private List<String> tagsId;
 
     public ObjectId getId() {
