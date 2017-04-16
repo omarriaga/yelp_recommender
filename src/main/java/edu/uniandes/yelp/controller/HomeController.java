@@ -8,7 +8,10 @@ package edu.uniandes.yelp.controller;
 import edu.uniande.yelp.facades.ReviewService;
 import edu.uniande.yelp.facades.TipsService;
 import edu.uniandes.yelp.recommender.CFRecommender;
+import edu.uniandes.yelp.recommender.ContentRecommender;
 import java.io.Serializable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.inject.Named;
@@ -29,6 +32,8 @@ public class HomeController implements Serializable{
     private ReviewService reviewService;
     @EJB
     private CFRecommender cfrecommender;
+    @EJB
+    private ContentRecommender contentRecommender;
 
     /**
      * Creates a new instance of HomeController
@@ -38,9 +43,16 @@ public class HomeController implements Serializable{
 
 
     public String hello(){
-        //tipsService.getTip();
-        //reviewService.getReview();
-        cfrecommender.init();
+        try {
+            //tipsService.getTip();
+            //reviewService.getReview();
+            //cfrecommender.init();
+            contentRecommender.init();
+            
+            
+        } catch (Exception ex) {
+            Logger.getLogger(HomeController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return "hello World!!";
     }
     

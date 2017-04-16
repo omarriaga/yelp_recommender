@@ -59,11 +59,14 @@ public class ContentRecommender extends AbstractRecommender{
                 if (i%5==0){
                     test_model.addRating(review.getnUserId(), review.getnBusinessId(), review.getStars());
                 }else{
+                    
                     train_model.addRating(review.getnUserId(), review.getnBusinessId(), review.getStars());
                 }
             }
             
         this.model = train_model;
+        
+        int user = model.getUsers().iterator().next();
 
         //Ya fue pre-procesado
         ContentBasedUtilities.createFeatureWeightFile(businessService.getAllBusiness());
@@ -75,8 +78,11 @@ public class ContentRecommender extends AbstractRecommender{
         //La implementacion crea unos vectores de similitud, que guarda en el archivo cos-sim-vectors.txt, ya fueron calculados
         contentBasedRecommender.setFeatureWeightFile("tag_weight.txt");
         contentBasedRecommender.init();
-
-        List<Integer> lista = contentBasedRecommender.recommendItems(2).subList(0, 500);
-        List<Integer> resp = new ArrayList();
+        System.out.println("recomendaciones");
+        List<Integer> lista = contentBasedRecommender.recommendItems(user).subList(0, 500);
+        //List<Integer> resp = new ArrayList(); 
+        for (Integer integer : lista) {
+            System.out.println("item: " +integer);
+        }
     }
 }
