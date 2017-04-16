@@ -5,17 +5,10 @@
  */
 package edu.uniandes.yelp.evaluator;
 
-import edu.uniandes.yelp.recommender.CFRecommender;
-import edu.uniandes.yelp.recommender.MongoDBDataModel;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import net.recommenders.rival.core.DataModel;
-import net.recommenders.rival.core.DataModelIF;
-import net.recommenders.rival.core.TemporalDataModel;
-import net.recommenders.rival.split.splitter.CrossValidationSplitter;
-import org.apache.mahout.cf.taste.common.TasteException;
-import org.apache.mahout.cf.taste.impl.common.LongPrimitiveIterator;
-import org.apache.mahout.cf.taste.model.Preference;
+import org.recommender101.data.DataModel;
+import org.recommender101.eval.metrics.Precision;
+import org.recommender101.eval.metrics.Recall;
+import org.recommender101.recommender.baseline.NearestNeighbors;
 
 /**
  *
@@ -23,47 +16,34 @@ import org.apache.mahout.cf.taste.model.Preference;
  */
 public class CFRecommenderEvaluator {
     
-    /**
-     * Default number of folds.
-     */
-    public static final int N_FOLDS = 5;
-    /**
-     * Default neighbohood size.
-     */
-    public static final int NEIGH_SIZE = 50;
-    /**
-     * Default cutoff for evaluation metrics.
-     */
-    public static final int AT = 10;
-    /**
-     * Default relevance threshold.
-     */
-    public static final double REL_TH = 3.0;
-    /**
-     * Default seed.
-     */
-    public static final long SEED = 2048L;
-    
-    private MongoDBDataModel dm;
-    private DataModelIF<Long, Long>[] splits;
+    private DataModel model_test;
+    private DataModel model_train;
+    private NearestNeighbors recommender;
     
     public void prepareData() {
-        try {
-            DataModel<Long, Long> rival = new TemporalDataModel<>();
-            LongPrimitiveIterator iterator = dm.getUserIDs();
-            while(iterator.hasNext()){
-                for (Preference p : dm.getPreferencesFromUser(iterator.nextLong())) {
-                    rival.addPreference(p.getUserID(), p.getItemID(), (double)p.getValue());
-                }
-            }
-            CrossValidationSplitter<Long, Long> splitter;
-            splitter = new CrossValidationSplitter<>(N_FOLDS,true,SEED);
-            splits = splitter.split(rival);
-        } catch (TasteException ex) {
-            Logger.getLogger(CFRecommender.class.getName()).log(Level.SEVERE, null, ex);
-        }
+
 
     }
+    
+    public void init(){
+        Precision precision_metric = new Precision();
+        precision_metric.setRecommender(recommender);
+        precision_metric.setTestDataModel(model_test);
+        precision_metric.setTrainingDataModel(model_train);
+        precision_metric.initialize();
+        precision_metric.setTargetSet("allrelevantintestset");
+
+        //System.out.println("precision: "+precision_metric.getEvaluationResult());
+
+        Recall recall_metric = new Recall();
+        recall_metric.setRecommender(recommender);
+        recall_metric.setTestDataModel(model_test);
+        recall_metric.setTrainingDataModel(model_train);
+        recall_metric.initialize();
+        recall_metric.setTargetSet("allrelevantintestset");
+    }
+    
+    
     
     
 }

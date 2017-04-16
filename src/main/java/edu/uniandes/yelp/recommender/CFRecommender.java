@@ -15,10 +15,6 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import javax.ejb.EJB;
 import javax.ejb.Singleton;
-import net.recommenders.rival.core.DataModel;
-import net.recommenders.rival.core.TemporalDataModel;
-import net.recommenders.rival.split.splitter.CrossValidationSplitter;
-import net.recommenders.rival.split.splitter.IterativeCrossValidationSplitter;
 import org.apache.mahout.cf.taste.common.TasteException;
 import org.apache.mahout.cf.taste.impl.common.LongPrimitiveIterator;
 import org.apache.mahout.cf.taste.impl.recommender.GenericItemBasedRecommender;
@@ -26,6 +22,8 @@ import org.apache.mahout.cf.taste.impl.similarity.PearsonCorrelationSimilarity;
 import org.apache.mahout.cf.taste.model.Preference;
 import org.apache.mahout.cf.taste.recommender.RecommendedItem;
 import org.apache.mahout.cf.taste.similarity.ItemSimilarity;
+import org.recommender101.data.DataModel;
+import org.recommender101.recommender.baseline.NearestNeighbors;
 
 /**
  *
@@ -59,6 +57,18 @@ public class CFRecommender {
             ex.printStackTrace();
             System.out.println("exception: " + ex.getLocalizedMessage());
         }
+    }
+    
+    public void buildRecommender(){
+        data = reviewService.getAllreviews();
+        DataModel model = new DataModel();
+        data.stream().forEach((r) -> {
+            model.addRating(r.getnUserId(), r.getnBusinessId(), r.getStars());
+        });
+        NearestNeighbors recommender = new NearestNeighbors();
+        recommender.setHideKnownItems("true");
+        //recommender.
+        
     }
 
     private void fillUserIds() {
