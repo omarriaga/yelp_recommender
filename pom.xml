@@ -91,8 +91,14 @@
             <artifactId>trove4j</artifactId>
             <version>3.0.3</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/com.github.mpkorstanje/simmetrics -->
+        <dependency>
+            <groupId>com.github.mpkorstanje</groupId>
+            <artifactId>simmetrics</artifactId>
+            <version>3.0.0</version>
+        </dependency>
     </dependencies>
-
+    
     <build>
         <plugins>
             <plugin>
