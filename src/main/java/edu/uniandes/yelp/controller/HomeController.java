@@ -6,7 +6,7 @@
 package edu.uniandes.yelp.controller;
 
 import edu.uniandes.yelp.recommender.CFRecommender;
-import edu.uniandes.yelp.recommender.CFRecommenderInt;
+import edu.uniandes.yelp.recommender.ContentRecommender;
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
@@ -29,7 +29,6 @@ public class HomeController implements Serializable{
     
     @EJB
     private CFRecommender cfrecommender;
-    //Lista de usuarios
     private List<Long> userIds;
     private Long userId;
 
@@ -49,11 +48,6 @@ public class HomeController implements Serializable{
         }
     }
 
-    
-    public List<Long> limitedList(){
-        return userIds.subList(0, 50);
-    }
-    
     public void recommend(){
        List<Long> items = cfrecommender.recommend(userId);
        items.stream().forEach((item) -> {
@@ -81,4 +75,19 @@ public class HomeController implements Serializable{
         this.userId = userId;
     }
      
+    public String hello(){
+        try {
+            //tipsService.getTip();
+            //reviewService.getReview();
+            //cfrecommender.init();
+            //contentRecommender.init();
+        } catch (Exception ex) {
+            Logger.getLogger(HomeController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return "hello World!!";
+    }
+    
+    public List<Long> limitedList(){
+        return userIds.subList(0, 50);
+    }
 }
