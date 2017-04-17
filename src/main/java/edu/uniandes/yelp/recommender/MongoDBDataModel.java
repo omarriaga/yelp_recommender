@@ -477,8 +477,7 @@ public final class MongoDBDataModel implements DataModel {
       objectIdLong.put("element_id", id);
       objectIdLong.put("long_value", longValue);
       collectionMap.insert(objectIdLong);
-      log.info("Adding Translation {}: {} long_value: {}",
-               isUser ? "User ID" : "Item ID", id, longValue);
+      //log.info("Adding Translation {}: {} long_value: {}", isUser ? "User ID" : "Item ID", id, longValue);
       return longValue;
     }
   }
@@ -586,13 +585,13 @@ public final class MongoDBDataModel implements DataModel {
       query.put(mongoUserID, userIsObject ? new ObjectId(userId) : userId);
       query.put(mongoItemID, itemIsObject ? new ObjectId(itemId) : itemId);
       if (mongoFinalRemove) {
-        log.info(collection.remove(query).toString());
+        //log.info(collection.remove(query).toString());
       } else {
         BasicDBObject update = new BasicDBObject();
         update.put("$set", new BasicDBObject("deleted_at", mongoTimestamp));
-        log.info(collection.update(query, update).toString());
+        //log.info(collection.update(query, update).toString());
       }
-      log.info("Removing userID: {} itemID: {}", userID, itemId);
+      //log.info("Removing userID: {} itemID: {}", userID, itemId);
     }
   }
 
@@ -609,7 +608,7 @@ public final class MongoDBDataModel implements DataModel {
       user.put(mongoPreference, preferenceIsString ? preferenceValue : Double.parseDouble(preferenceValue));
       user.put("created_at", mongoTimestamp);
       collection.insert(user);
-      log.info("Adding userID: {} itemID: {} preferenceValue: {}", userID, itemID, preferenceValue);
+      //log.info("Adding userID: {} itemID: {} preferenceValue: {}", userID, itemID, preferenceValue);
     }
   }
 
@@ -649,7 +648,7 @@ public final class MongoDBDataModel implements DataModel {
             }
             rawData.put(userID, newPrefs);
           }
-          log.info("Removing userID: {} itemID: {}", userID, itemID);
+          //log.info("Removing userID: {} itemID: {}", userID, itemID);
           if (mongoManage) {
             removeMongoUserItem(Long.toString(userID), Long.toString(itemID));
           }
@@ -688,7 +687,7 @@ public final class MongoDBDataModel implements DataModel {
         prefs.setUserID(0, userID);
         prefs.setItemID(0, itemID);
         prefs.setValue(0, preferenceValue);
-        log.info("Adding userID: {} itemID: {} preferenceValue: {}", userID, itemID, preferenceValue);
+        //log.info("Adding userID: {} itemID: {} preferenceValue: {}", userID, itemID, preferenceValue);
         rawData.put(userID, prefs);
         if (mongoManage) {
           addMongoUserItem(Long.toString(userID),

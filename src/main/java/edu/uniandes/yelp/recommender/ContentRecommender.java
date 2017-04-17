@@ -24,7 +24,8 @@ import org.recommender101.recommender.extensions.contentbased.ContentBasedRecomm
  * @author Usuario
  */
 @Singleton
-public class ContentRecommender extends AbstractRecommender{
+public class ContentRecommender extends AbstractRecommender {
+
     @EJB
     private ReviewService reviewService;
     @EJB
@@ -43,7 +44,7 @@ public class ContentRecommender extends AbstractRecommender{
         return new LinkedList<>();
     }
 
-    public static void main(String[] args) throws Exception{
+    public static void main(String[] args) throws Exception {
         ContentRecommender cr = new ContentRecommender();
         cr.init();
     }
@@ -52,25 +53,25 @@ public class ContentRecommender extends AbstractRecommender{
     public void init() throws Exception {
 
         data = reviewService.getAllreviews();
-        
+
         DataModel train_model = new DataModel();
-            DataModel test_model = new DataModel();
-            int i = 0;
-            for (Review review : data){
-                if (i%5==0){
-                    test_model.addRating(review.getnUserId(), review.getnBusinessId(), review.getStars());
-                }else{
-                    train_model.addRating(review.getnUserId(), review.getnBusinessId(), review.getStars());
-                }
+        DataModel test_model = new DataModel();
+        int i = 0;
+        for (Review review : data) {
+            if (i % 5 == 0) {
+                test_model.addRating(review.getnUserId(), review.getnBusinessId(), review.getStars());
+            } else {
+                train_model.addRating(review.getnUserId(), review.getnBusinessId(), review.getStars());
             }
-            
+        }
+
         this.model = train_model;
 
         //Ya fue pre-procesado
         List<Tag> tagsWeight = ContentBasedUtilities.createFeatureWeightFile(businessService.getAllBusiness());
-       
-        this.contentBasedRecommender= new ContentBasedRecommender();
-        ContentBasedRecommender.dataDirectory="data";
+
+        this.contentBasedRecommender = new ContentBasedRecommender();
+        ContentBasedRecommender.dataDirectory = "data";
         contentBasedRecommender.setDataModel(model);
         contentBasedRecommender.setWordListFile("artists.dat");
         //La implementacion crea unos vectores de similitud, que guarda en el archivo cos-sim-vectors.txt, ya fueron calculados
