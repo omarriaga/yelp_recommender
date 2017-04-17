@@ -51,6 +51,12 @@ public class Review implements Serializable {
     private int nUserId;
     @Transient
     private int nBusinessId;
+    
+    
+    public void initIds(){
+        this.nUserId = transform(userId);
+        this.nBusinessId = transform(businessId);
+    }
 
     public ObjectId getId() {
         return id;
@@ -73,7 +79,7 @@ public class Review implements Serializable {
     }
 
     public void setUserId(String userId) {
-        nUserId = transform(userId);
+        this.nUserId = transform(userId);
         this.userId = userId;
     }
 
@@ -82,7 +88,7 @@ public class Review implements Serializable {
     }
 
     public void setBusinessId(String businessId) {
-        nBusinessId = transform(businessId);
+        this.nBusinessId = transform(businessId);
         this.businessId = businessId;
     }
 
@@ -158,7 +164,7 @@ public class Review implements Serializable {
         this.nBusinessId = nBusinessId;
     }
     
-    public static int transform(String name) {
+    public int transform(String name) {
         String a = "";
         for (int i = 0; i < name.length(); i++) {
             if (name.charAt(i) >= 57 || name.charAt(i) < 48) {

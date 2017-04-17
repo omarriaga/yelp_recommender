@@ -5,9 +5,12 @@
  */
 package edu.uniandes.yelp.controller;
 
-import edu.uniandes.yelp.recommender.CFRecommender;
+import edu.uniandes.yelp.recommender.CFRecommenderInt;
 import java.io.Serializable;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -24,10 +27,10 @@ import javax.faces.view.ViewScoped;
 public class HomeController implements Serializable{
     
     @EJB
-    private CFRecommender cfrecommender;
+    private CFRecommenderInt cfrecommender;
     //Lista de usuarios
-    private List<Long> userIds;
-    private long userId;
+    private List<Integer> userIds;
+    private int userId;
 
     /**
      * Creates a new instance of HomeController
@@ -37,8 +40,12 @@ public class HomeController implements Serializable{
     
     @PostConstruct
     public void init(){
-        cfrecommender.init();
-        userIds = cfrecommender.getUserIds();
+        try {
+            cfrecommender.init();
+            userIds = new LinkedList<>(cfrecommender.getUserIds());
+        } catch (Exception ex) {
+            Logger.getLogger(HomeController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
 
@@ -49,19 +56,22 @@ public class HomeController implements Serializable{
         return "hello World!!";
     }
     
-    public List<Long> limitedList(){
+    public List<Integer> limitedList(){
         return userIds.subList(0, 50);
     }
     
     public void recommend(){
-        cfrecommender.recommend(userId);
+       List<Integer> items = cfrecommender.recommendItems(userId);
+       items.stream().forEach((item) -> {
+           System.out.println("item: "+item);
+        });
     }
 
-    public List<Long> getUserIds() {
+    public List<Integer> getUserIds() {
         return userIds;
     }
 
-    public void setUserIds(List<Long> userIds) {
+    public void setUserIds(List<Integer> userIds) {
         this.userIds = userIds;
     }
 
@@ -69,7 +79,7 @@ public class HomeController implements Serializable{
         return userId;
     }
 
-    public void setUserId(long userId) {
+    public void setUserId(int userId) {
         this.userId = userId;
     }
      
