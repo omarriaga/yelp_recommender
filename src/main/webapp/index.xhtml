@@ -9,9 +9,6 @@
         <title>Facelet Title</title>
     </h:head>
     <h:body>
-        Hello from Facelets
-        <br />
-        <h:outputText value="#{homeController.hello()}" />
         <br/>
         <h:form>
             <p:selectOneMenu id="user_ids" value="#{homeController.userId}"  >
@@ -19,7 +16,8 @@
                 <f:selectItems value="#{homeController.limitedList()}" var="id" itemLabel="#{id.toString()}" itemValue="#{id.longValue()}" />
             </p:selectOneMenu>
             
-            <p:commandButton action="#{homeController.recommend()}" />
+            <p:commandButton action="#{homeController.recommend()}" value="Recomendar" />
+            <p:commandButton action="#{homeController.eval()}" value="Evaluar" />
         </h:form>
     </h:body>
 </html>

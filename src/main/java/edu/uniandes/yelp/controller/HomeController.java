@@ -5,6 +5,7 @@
  */
 package edu.uniandes.yelp.controller;
 
+import edu.uniandes.yelp.recommender.CFRecommender;
 import edu.uniandes.yelp.recommender.CFRecommenderInt;
 import java.io.Serializable;
 import java.util.LinkedList;
@@ -27,10 +28,10 @@ import javax.faces.view.ViewScoped;
 public class HomeController implements Serializable{
     
     @EJB
-    private CFRecommenderInt cfrecommender;
+    private CFRecommender cfrecommender;
     //Lista de usuarios
-    private List<Integer> userIds;
-    private int userId;
+    private List<Long> userIds;
+    private Long userId;
 
     /**
      * Creates a new instance of HomeController
@@ -48,38 +49,35 @@ public class HomeController implements Serializable{
         }
     }
 
-
-    public String hello(){
-        //tipsService.getTip();
-        //reviewService.getAllreviews();
-        //cfrecommender.init();
-        return "hello World!!";
-    }
     
-    public List<Integer> limitedList(){
+    public List<Long> limitedList(){
         return userIds.subList(0, 50);
     }
     
     public void recommend(){
-       List<Integer> items = cfrecommender.recommendItems(userId);
+       List<Long> items = cfrecommender.recommend(userId);
        items.stream().forEach((item) -> {
            System.out.println("item: "+item);
         });
     }
+    
+    public void eval(){
+        cfrecommender.evaluate();
+    }
 
-    public List<Integer> getUserIds() {
+    public List<Long> getUserIds() {
         return userIds;
     }
 
-    public void setUserIds(List<Integer> userIds) {
+    public void setUserIds(List<Long> userIds) {
         this.userIds = userIds;
     }
 
-    public long getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
      
