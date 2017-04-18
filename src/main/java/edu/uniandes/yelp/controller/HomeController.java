@@ -5,6 +5,7 @@
  */
 package edu.uniandes.yelp.controller;
 
+import edu.uniande.yelp.facades.LDAService;
 import edu.uniande.yelp.facades.ReviewService;
 import edu.uniande.yelp.facades.TipsService;
 import edu.uniandes.yelp.recommender.CFRecommender;
@@ -34,6 +35,8 @@ public class HomeController implements Serializable{
     private CFRecommender cfrecommender;
     @EJB
     private ContentRecommender contentRecommender;
+    @EJB
+    private LDAService ldaService;
 
     /**
      * Creates a new instance of HomeController
@@ -47,7 +50,8 @@ public class HomeController implements Serializable{
             //tipsService.getTip();
             //reviewService.getReview();
             //cfrecommender.init();
-            contentRecommender.init();
+            //contentRecommender.init();
+            ldaService.getLda();
             
             
         } catch (Exception ex) {
