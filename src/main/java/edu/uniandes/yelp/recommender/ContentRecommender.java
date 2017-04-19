@@ -71,11 +71,11 @@ public class ContentRecommender extends AbstractRecommender {
         ContentBasedUtilities.createFeatureWeightFile(businessService.getAllBusiness());
         System.out.println("creando recomendador");
         this.contentBasedRecommender = new ContentBasedRecommender();
-        ContentBasedRecommender.dataDirectory = "data";
+        ContentBasedRecommender.dataDirectory = "/Users/juan";
         contentBasedRecommender.setDataModel(model);
-        contentBasedRecommender.setWordListFile("/Users/juan/business.dat");
+        contentBasedRecommender.setWordListFile("business.dat");
         //La implementacion crea unos vectores de similitud, que guarda en el archivo cos-sim-vectors.txt, ya fueron calculados
-        contentBasedRecommender.setFeatureWeightFile("/Users/juan/tag_weight.txt");
+        contentBasedRecommender.setFeatureWeightFile("tag_weight.txt");
         contentBasedRecommender.init();
         System.out.println("recomendaciones");
         List<Integer> lista = contentBasedRecommender.recommendItems(user).subList(0, 500);

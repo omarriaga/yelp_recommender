@@ -6,6 +6,7 @@
 package edu.uniandes.yelp.controller;
 
 import edu.uniande.yelp.entities.Business;
+import edu.uniande.yelp.facades.BusinessService;
 import edu.uniandes.yelp.recommender.CFRecommender;
 import java.io.Serializable;
 import java.util.LinkedList;
@@ -26,6 +27,9 @@ import javax.faces.view.ViewScoped;
 @Named(value = "homeController")
 @ViewScoped
 public class HomeController implements Serializable{
+    
+    @EJB
+    private BusinessService businessService;
 
     /**
      * Creates a new instance of HomeController
@@ -36,18 +40,13 @@ public class HomeController implements Serializable{
     @PostConstruct
     public void init(){
         try {
-            
+            businessService.getReview();
         } catch (Exception ex) {
-            Logger.getLogger(HomeController.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("boom!!");
         }
     }
  
     public String hello(){
-        try {
-
-        } catch (Exception ex) {
-            Logger.getLogger(HomeController.class.getName()).log(Level.SEVERE, null, ex);
-        }
         return "hello World!!";
     }
     

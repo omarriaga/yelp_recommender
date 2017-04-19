@@ -84,8 +84,8 @@ public class Business implements Serializable {
     @Column(name = "state")
     private String state;
     @ElementCollection
-    @OrderColumn(name = "categories")
-    private List<String> tagsId;
+    @Column(name = "categories")
+    private List<String> categories;
 
     public ObjectId getId() {
         return id;
@@ -103,12 +103,12 @@ public class Business implements Serializable {
         this.businessId = businessId;
     }
 
-    public List<String> getTagsId() {
-        return this.tagsId;
+    public List<String> getCategories() {
+        return this.categories;
     }
 
-    public void setTagsId(List<String> tagsId) {
-        this.tagsId = tagsId;
+    public void setCategories(List<String> categories) {
+        this.categories = categories;
     }
 
     public String getName() {

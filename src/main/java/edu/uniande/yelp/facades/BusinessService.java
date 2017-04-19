@@ -38,10 +38,12 @@ public class BusinessService {
     }
     
     public void getReview(){
+        System.out.println("iniciando consulta");
         List<Business> reviews = em.createNativeQuery("{business_id: '2aFiy99vNLklCx3T_tGS9A'}", Business.class).getResultList();
+        System.out.println("size: "+reviews.size());
         for(Business review : reviews){
             System.out.println("review.text: "+review.getBusinessId());
-            System.out.println("review.stars: "+review.getTagsId());
+            System.out.println("review.tags: "+review.getCategories().stream().collect(Collectors.joining(",")));
             System.out.println("====================================================");
         }
     }

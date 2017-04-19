@@ -14,7 +14,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.Singleton;
@@ -98,7 +97,7 @@ public class CFRecommender {
         try {
             List<RecommendedItem> items = recommender.recommend(userID, 10);
             List<ObjectId> ids = new LinkedList<>();
-            System.out.println("user: " + userID);
+            System.out.println("user: " + dm.fromLongToId(userID));
             System.out.println("count: " + items.size());
             System.out.println("max preference: " + dm.getMaxPreference());
             System.out.println("min preference: " + dm.getMinPreference());
