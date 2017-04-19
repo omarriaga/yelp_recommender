@@ -6,11 +6,8 @@
 package edu.uniandes.yelp.recommender;
 
 import edu.uniande.yelp.entities.Review;
-import edu.uniande.yelp.entities.Business;
-import edu.uniande.yelp.entities.Tag;
 import edu.uniande.yelp.facades.ReviewService;
 import edu.uniande.yelp.facades.BusinessService;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import javax.ejb.EJB;
@@ -33,6 +30,7 @@ public class ContentRecommender extends AbstractRecommender {
     private List<Review> data;
     private DataModel model;
     private ContentBasedRecommender contentBasedRecommender;
+    
 
     @Override
     public float predictRating(int user, int item) {
@@ -51,32 +49,33 @@ public class ContentRecommender extends AbstractRecommender {
 
     @Override
     public void init() throws Exception {
-
+        
+        System.out.println("Iniciando recomendador");
         data = reviewService.getAllreviews();
-
+        
         DataModel train_model = new DataModel();
         DataModel test_model = new DataModel();
         int i = 0;
-        for (Review review : data) {
+        data.stream().forEach((review) -> {
             if (i % 5 == 0) {
                 test_model.addRating(review.getnUserId(), review.getnBusinessId(), review.getStars());
             } else {
 
                 train_model.addRating(review.getnUserId(), review.getnBusinessId(), review.getStars());
             }
-        }
+        });
 
         int user = data.get(0).getnUserId();
-
+        System.out.println("DataModel creado");
         //Ya fue pre-procesado
         ContentBasedUtilities.createFeatureWeightFile(businessService.getAllBusiness());
-
+        System.out.println("creando recomendador");
         this.contentBasedRecommender = new ContentBasedRecommender();
         ContentBasedRecommender.dataDirectory = "data";
         contentBasedRecommender.setDataModel(model);
-        contentBasedRecommender.setWordListFile("business.dat");
+        contentBasedRecommender.setWordListFile("/Users/juan/business.dat");
         //La implementacion crea unos vectores de similitud, que guarda en el archivo cos-sim-vectors.txt, ya fueron calculados
-        contentBasedRecommender.setFeatureWeightFile("tag_weight.txt");
+        contentBasedRecommender.setFeatureWeightFile("/Users/juan/tag_weight.txt");
         contentBasedRecommender.init();
         System.out.println("recomendaciones");
         List<Integer> lista = contentBasedRecommender.recommendItems(user).subList(0, 500);

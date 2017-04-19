@@ -5,7 +5,9 @@
  */
 package edu.uniandes.yelp.recommender;
 
+import edu.uniande.yelp.entities.Business;
 import edu.uniande.yelp.entities.Review;
+import edu.uniande.yelp.facades.BusinessService;
 import edu.uniande.yelp.facades.ReviewService;
 import java.net.UnknownHostException;
 import java.util.LinkedList;
@@ -13,6 +15,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.Singleton;
 import org.apache.mahout.cf.taste.common.TasteException;
@@ -28,6 +31,7 @@ import org.apache.mahout.cf.taste.model.Preference;
 import org.apache.mahout.cf.taste.recommender.RecommendedItem;
 import org.apache.mahout.cf.taste.recommender.Recommender;
 import org.apache.mahout.cf.taste.similarity.ItemSimilarity;
+import org.bson.types.ObjectId;
 
 /**
  *
@@ -38,6 +42,8 @@ public class CFRecommender {
 
     @EJB
     private ReviewService reviewService;
+    @EJB
+    private BusinessService businessService;
     private List<Review> data;
     private GenericItemBasedRecommender recommender;
     private MongoDBDataModel dm;
@@ -45,6 +51,11 @@ public class CFRecommender {
 
     public CFRecommender() {
         userIds = new LinkedList<>();
+    }
+    
+    @PostConstruct
+    public void config(){
+        init();
     }
 
     public void init() {
@@ -83,9 +94,10 @@ public class CFRecommender {
         return userIds;
     }
 
-    public List<Long> recommend(long userID) {
+    public List<Business> recommend(long userID) {
         try {
             List<RecommendedItem> items = recommender.recommend(userID, 10);
+            List<ObjectId> ids = new LinkedList<>();
             System.out.println("user: " + userID);
             System.out.println("count: " + items.size());
             System.out.println("max preference: " + dm.getMaxPreference());
@@ -95,8 +107,11 @@ public class CFRecommender {
             }
             items.stream().forEach((item) -> {
                 System.out.println("item : " + item.getItemID());
+                ids.add(new ObjectId(dm.fromLongToId(item.getItemID())));
             });
-            return items.stream().map(s -> s.getItemID()).collect(Collectors.toList());
+            List<Business> datos = businessService.getBusiness(ids);
+            
+            return datos;
         } catch (TasteException ex) {
             Logger.getLogger(CFRecommender.class.getName()).log(Level.SEVERE, null, ex);
             return new LinkedList<>();

@@ -103,8 +103,8 @@ public class ContentBasedUtilities {
             PrintWriter pr= null;
             PrintWriter prBusiness= null;
             try {
-                pr= new PrintWriter(new File("tag_weight.txt"));
-                prBusiness= new PrintWriter(new File("business.dat"));
+                pr= new PrintWriter(new File("/Users/juan/tag_weight.txt"));
+                prBusiness= new PrintWriter(new File("/Users/juan/business.dat"));
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(ContentBasedUtilities.class.getName()).log(Level.SEVERE, null, ex);
             }

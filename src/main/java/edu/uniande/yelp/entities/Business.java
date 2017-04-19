@@ -79,6 +79,8 @@ public class Business implements Serializable {
     private String address;
     @Column(name = "city")
     private String city;
+    @Column(name = "stars")
+    private float stars;
     @Column(name = "state")
     private String state;
     @ElementCollection
@@ -148,6 +150,13 @@ public class Business implements Serializable {
     public void setState(String state) {
         this.state = state;
     }
-    
+
+    public float getStars() {
+        return stars;
+    }
+
+    public void setStars(float stars) {
+        this.stars = stars;
+    }
     
 }

@@ -34,7 +34,7 @@ public class Review implements Serializable {
     @Column(name = "business_id")
     private String businessId;
     @Column(name = "stars")
-    private int stars;
+    private float stars;
     @Column(name = "date")
     private String date;
     @Column(name = "text")
@@ -92,11 +92,11 @@ public class Review implements Serializable {
         this.businessId = businessId;
     }
 
-    public int getStars() {
+    public float getStars() {
         return stars;
     }
 
-    public void setStars(int stars) {
+    public void setStars(float stars) {
         this.stars = stars;
     }
 
