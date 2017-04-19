@@ -139,7 +139,7 @@ public class ContentBasedUtilities {
                     if(weightTags.get(tag) > 3){
                         //tags.add(newTag);
                         String outputLine = rev.getBusinessId() + ";" + tag + ":" + weightTags.get(tag);
-                        pr.println(outputLine);
+                        prBusiness.println(outputLine);
                     }
                 }
             }	
