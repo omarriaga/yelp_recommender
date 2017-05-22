@@ -1,18 +1,14 @@
 package edu.uniandes.yelp.recommender;
 
-import edu.uniande.yelp.entities.Review;
 import edu.uniande.yelp.entities.Business;
-import edu.uniande.yelp.entities.Tag;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 

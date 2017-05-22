@@ -37,6 +37,14 @@ public class BusinessService {
         return q.getResultList();
     }
     
+    public List<Business> getBusinessWithStringID(List<String> ids){
+        String ids_string = ids.stream().collect(Collectors.joining(","));
+        //System.out.println("strings: "+ids_string);
+        Query q = em.createNativeQuery("{recommendation : { $in: ["+ids_string+"] }}", Business.class);
+        System.out.println("termino query");
+        return q.getResultList().subList(0, 30);
+    }
+    
     public void getReview(){
         System.out.println("iniciando consulta");
         List<Business> reviews = em.createNativeQuery("{business_id: '2aFiy99vNLklCx3T_tGS9A'}", Business.class).getResultList();

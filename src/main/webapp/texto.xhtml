@@ -16,5 +16,27 @@ and open the template in the editor.
     <h:body>
         <ui:include src="menu.xhtml" />
         <br/>
+        <h:form>
+            <p:selectOneMenu id="user_ids" value="#{textController.userId}"  >
+                <f:selectItem itemLabel="Usuarios" itemValue="-1"/>
+                <f:selectItem itemLabel="1" itemValue="57w8gLY3f7OwGmWNtUIFIA"/>
+                <f:selectItem itemLabel="2" itemValue="1-xPzJk_ijBvY2J8Re1DIQ"/>
+                <f:selectItem itemLabel="3" itemValue="oPQAJEiJnRrD0Km5RlKmtw"/>
+                <f:selectItem itemLabel="4" itemValue="Zmp1Q6Ul9VH3zL02Z5ls_A"/>
+                <f:selectItem itemLabel="5" itemValue="TryfbZaaGtedncOMq9k86g"/>
+                <f:selectItem itemLabel="6" itemValue="zOU38EUHgUtEI4ziZ8DB1w"/>
+            </p:selectOneMenu>
+            <br />
+            <p:commandButton action="#{textController.recommend()}" value="Recomendar" update="business_datatable" />
+            <br />
+            <p:dataTable var="business" value="#{textController.items}" id="business_datatable" >
+                <p:column headerText="Nombre">
+                    <h:outputText value="#{business.name}" />
+                </p:column>
+                <p:column headerText="Estrellas">
+                    <h:outputText value="#{business.stars}" />
+                </p:column> 
+            </p:dataTable>
+        </h:form>
     </h:body>
 </html>

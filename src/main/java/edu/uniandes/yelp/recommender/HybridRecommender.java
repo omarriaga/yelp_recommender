@@ -25,7 +25,9 @@ public class HybridRecommender {
     public HybridRecommender() {
     }
     
-    
+    public void recommend(){
+        
+    }
     
     
     

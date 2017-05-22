@@ -5,49 +5,69 @@
  */
 package edu.uniande.yelp.entities;
 
-import java.util.List;
+import java.io.Serializable;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OrderColumn;
+import javax.persistence.Table;
 import org.bson.types.ObjectId;
 
 /**
  *
  * @author raulandres
  */
-public class Lda {
+@Entity
+@Table(name = "textrec")
+public class Lda implements Serializable {
     private static final long serialVersionUID = 1L;
-    @Column(name = "business_id")
-    private String businessId;
-    @Column(name = "lda_1")
-    private String lda_1;
-    @Column(name = "lda_2")
-    private String lda_2;
+    
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private ObjectId id;
+    @Column(name = "user_id")
+    private String userID;
+    @Column(name = "recommendation")
+    private String recommendation;
+    @Column(name = "user")
+    private ObjectId user;
 
-    public String getbusinessId() {
-        return businessId;
-    }
-
-    public void setbusinessId(String businessId) {
-        this.businessId = businessId;
-    }
-
-    public String getLDA_1() {
-        return lda_1;
-    }
-
-    public void setLDA_1(String lda_1) {
-        this.lda_1 = lda_1;
+    public Lda() {
     }
     
-    public String getLDA_2() {
-        return lda_2;
+    
+    public String getRecommendation() {
+        return recommendation;
     }
 
-    public void setLDA_2(String lda_2) {
-        this.lda_2 = lda_2;
+    public void setRecommendation(String recommendation) {
+        this.recommendation = recommendation;
+    }    
+
+    public ObjectId getId() {
+        return id;
     }
+
+    public void setId(ObjectId id) {
+        this.id = id;
+    }
+
+    public String getUserID() {
+        return userID;
+    }
+
+    public void setUserID(String userID) {
+        this.userID = userID;
+    }
+
+    public ObjectId getUser() {
+        return user;
+    }
+
+    public void setUser(ObjectId user) {
+        this.user = user;
+    }
+    
+    
 }

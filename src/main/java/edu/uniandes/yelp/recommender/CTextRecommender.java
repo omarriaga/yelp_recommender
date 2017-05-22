@@ -5,42 +5,56 @@
  */
 package edu.uniandes.yelp.recommender;
 
+import edu.uniande.yelp.entities.Business;
 import edu.uniande.yelp.entities.Lda;
+import edu.uniande.yelp.facades.BusinessService;
 import edu.uniande.yelp.facades.LDAService;
+import edu.uniande.yelp.facades.ReviewService;
+import java.net.UnknownHostException;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.stream.Collectors;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import org.recommender101.data.DataModel;
+import javax.ejb.Singleton;
+import org.apache.mahout.cf.taste.common.TasteException;
+import org.apache.mahout.cf.taste.impl.common.LongPrimitiveIterator;
 
 /**
  *
  * @author raulandres
  */
+@Singleton
 public class CTextRecommender {
-     @EJB
+    @EJB
+    private BusinessService businessService;
+    @EJB
     private LDAService ldaService;
     private List<Lda> data;
+    private MongoDBDataModel dm;
+    private List<Long> userIds;
+
+    public CTextRecommender() {
+        userIds = new LinkedList<>();
+    }
     
-    
-    public void init(){
-        try {
-            data = ldaService.getAllldas();
-            DataModel train_model = new DataModel();
-            DataModel test_model = new DataModel();
-            
-            /*StringMetric metric = StringMetrics.cosineSimilarity();
-	
-            float result = metric.compare(str1, str2);
-            for (Lda lda : data){
-                if (i%5==0){
-                    test_model.addRating(lda.getbusinessId(), lda.getLDA_1(), lda.getLDA_2());
-                }else{
-                    train_model.addRating(review.getnUserId(), review.getnBusinessId(), review.getStars());
-                }
-            }*/
-            
-          //  recommender.init();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+    @PostConstruct
+    public void config(){
+        init();
+    }
+
+    public void init() {
+        System.out.println("Iniciando MongoDataModel");
+    }
+
+   
+
+    public List<Business> recommendation(String userID) {
+        List<Lda> items = ldaService.getAllldas(userID);
+        List<String> ids = items.stream().map(item -> item.getRecommendation()).collect(Collectors.toList());
+        System.out.println("string: "+ids.size());
+        return businessService.getBusinessWithStringID(ids);
     }
 }
